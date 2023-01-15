@@ -1,18 +1,58 @@
-{% paginate collection.products by 2 %}
-  <h1>{{ collection.title }}</h1>
-  {% for product in collection.products %}
-    <div>
-      <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-      {{ product.price | money }}
-      {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
-      <a href="{{ product.url | within: collection }}">
-        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-      </a>
+{% comment %} create div.container and put the below code inside {% endcomment %}
+
+<div class="container">
+  {% paginate collection.products by 2 %}
+    {% comment %} add a div.row and put the h1 inside {% endcomment %}
+    <div class="row my-5">
+      <h1 class="text-center">{{ collection.title }}</h1>
     </div>
-  {% else %}
-    <p>no matches</p>
-  {% endfor %}
-  {% if paginate.pages > 1 %}
-    {{ paginate | default_pagination }}
-  {% endif %}
-{% endpaginate %}
+
+    {% comment %} move code within div.row {% endcomment %}
+    <div class="row justify-content-center my-5">
+      {% for product in collection.products %}
+        {% comment %} copy below code from templates/featured-collection.liquid {% endcomment %}
+        {% assign image = product.featured_media.preview_image %}
+        {% comment %} create div.col-3 {% endcomment %}
+        <div class="col-3 g-2">
+
+          {% comment %} copy below code from templates/featured-collection.liquid {% endcomment %}
+          <div class="card" style="width: 18rem;">
+            {% if image != blank %}
+              <img
+                class="card-img-top"
+                src="{{ image | img_url:'450x' }}"
+                alt="{{ product.title }}">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+            {% endif %}
+
+            <div class="card-body">
+              <h3>
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h3>
+              <p>{{ product.price | | money_without_trailing_zeros }}</p>
+            </div>
+          </div>
+        </div>
+
+        {% comment %} delete code {% endcomment %}
+        {% comment %} <div>
+        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+        {{ product.price | money }}
+        {% unless product.available %}<br><strong>sold out</strong>
+        {% endunless %}
+        <a href="{{ product.url | within: collection }}">
+        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+        </a>
+        </div> {% endcomment %}
+      {% else %}
+        <p>no matches</p>
+      {% endfor %}
+    </div>
+
+
+    {% if paginate.pages > 1 %}
+      {{ paginate | default_pagination }}
+    {% endif %}
+  {% endpaginate %}
+</div>
