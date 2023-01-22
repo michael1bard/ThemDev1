@@ -58,15 +58,9 @@
 
             {% form 'new_comment', article %}
 
-              {% for error in form.errors %}
-                <div class="alert alert-danger">
-                  {% if error == 'form' %}
-                    {{ form.errors.messages[error] }}
-                  {% else %}
-                    {{ form.errors.translated_fields[error] }} {{ form.errors.messages[error] }}
-                  {% endif %}
+              % include 'form-error', form:form %
 
-                {% endfor %}
+                {% endform %}
               </div>
               <label for="CommentAuthor">name</label>
               <input
@@ -94,9 +88,9 @@
                 placeholder="message">{{ form.body }}</textarea>
 
               <input type="submit" value="post">
-            {% endform %}
+              {% endif %}
           </div>
-        {% endif %}
+        
       </div>
     </div>
     <div class="col-12 col-md-4">
