@@ -53,3 +53,13 @@ if (document.getElementById("forgotPassword") != null) {
       }
     });
 }
+
+const localeItems = document.querySelectorAll("#localeItem");
+if (localeItems.length > 0) {
+  localeItems.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      document.getElementById("locale").value = item.getAttribute("lang");
+      document.getElementById("localization_form_tag").submit();
+    });
+  });
+}
